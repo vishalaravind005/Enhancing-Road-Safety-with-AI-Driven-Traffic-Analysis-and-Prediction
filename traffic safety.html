@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Road Safety Prediction</title>
+</head>
+<body>
+  <h1>🚦 Road Safety Prediction</h1>
+  <form id="form">
+    <label>Number of Vehicles Involved:</label>
+    <input type="number" name="Number_of_vehicles_involved" required><br><br>
+
+    <label>Number of Casualties:</label>
+    <input type="number" name="Number_of_casualties" required><br><br>
+
+    <label>Day of Week:</label>
+    <input type="text" name="Day_of_week" required><br><br>
+
+    <label>Driver Age Band:</label>
+    <input type="text" name="Age_band_of_driver" required><br><br>
+
+    <label>Type of Vehicle:</label>
+    <input type="text" name="Type_of_vehicle" required><br><br>
+
+    <label>Accident Area:</label>
+    <input type="text" name="Area_accident_occured" required><br><br>
+
+    <label>Road Surface Type:</label>
+    <input type="text" name="Road_surface_type" required><br><br>
+
+    <button type="submit">Predict</button>
+  </form>
+
+  <h2 id="output"></h2>
+
+  <script>
+    document.getElementById("form").addEventListener("submit", async function(event) {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const payload = Object.fromEntries(formData.entries());
+
+      const response = await fetch("http://127.0.0.1:8000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+      document.getElementById("output").innerText = "Prediction: " + result.prediction;
+    });
+  </script>
+</body>
+</html>
